@@ -601,10 +601,72 @@ module Api::V1
 end
 ```
 
-### Rails cでUserモデルに値が追加されているか確認
+### Userモデルに値が追加されているか確認
 
 ```
+$ rails c
+
+# =>
 Parameters: {"user"=>{"email"=>"testuser@test.com", "name"=>"testUser", "uid"=>"lhHxsWlR1MVeCehE7Hf66X0q9Uh1"}}
 ```
 
+## セッションの保持
 
+### Firebaseでログインしているユーザーを呼び出す
+
+```
+# frontend/plugins/auth-check.js
+import firebase from '@/plugins/firebase'
+import axios from '@/plugins/axios'
+
+const authCheck = ({ store, redirect }) => {
+    firebase.auth().onAuthStateChanged(async user => {
+        if (user) {
+            const { data } = await axios.get(`/v1/users?uid=${user.uid}`)
+            console.log('ログインしているユーザー:', data)
+        }
+    })
+}
+
+export default authCheck
+
+# frontend/nuxt.config.js
+export default {
+  :<snip>
+  plugins: [
+    '@/plugins/vuetify',
+    '@/plugins/auth-check'
+  ],
+  :<snip>
+}
+```
+
+### ブラウザのコンソールでユーザーが呼び出されているか確認
+
+```
+$ yarn run dev
+
+// => ログインしているユーザー: (2) [{…}, {…}]
+```
+
+### Railsでログインしているユーザーの検索
+
+```
+# backend/app/controllers/api/v1/users_controller.rb
+def index
+  if params[:uid]
+    @user = User.find_by(uid: params[:uid])
+    render json: @user
+  else
+    @users = User.all
+    render json: @users
+  end
+end
+```
+
+### ブラウザのコンソールでユーザーが呼び出されているか再度確認
+
+```
+# =>
+ログインしているユーザー: {id: 1, name: "testUser1", email: "testuser1@test.com", uid: "fMwwF9Jh1Kdw5ME70OwIUDvU3it1", created_at: "2020-01-17T10:52:08.331Z", …}
+```

@@ -2,8 +2,13 @@ module Api::V1
   class UsersController < ApplicationController
 
     def index
-      @users = User.all
-      render json: @users
+      if params[:uid]
+        @user = User.find_by(uid: params[:uid])
+        render json: @user
+      else
+        @users = User.all
+        render json: @users
+      end
     end
 
     def create
