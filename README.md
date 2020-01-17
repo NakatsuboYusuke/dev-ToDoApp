@@ -7,6 +7,18 @@ https://bit.ly/2FZf5xi
 - Frontend Nuxt.js
 - Backend Ruby on Rails API
 
+## インデックス
+
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E7%94%9F%E6%88%90">プロジェクトを生成</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#rails%E3%81%A7api%E3%82%92%E4%BD%9C%E6%88%90">RailsでAPIを作成</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#nuxt%E3%81%A7component%E3%82%92%E4%BD%9C%E6%88%90">NuxtでComponentを作成</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#nuxt%E3%81%A7%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%82%92%E8%BF%BD%E5%8A%A0">Nuxtでメソッドを追加</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#firebase%E3%81%A7%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%92%E4%BD%9C%E6%88%90">Firebaseでプロジェクトを作成</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#firebase%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E6%A9%9F%E8%83%BD%E3%82%92nuxt%E3%81%AB%E7%B5%84%E3%81%BF%E8%BE%BC%E3%82%80">Firebaseのログイン機能をNuxtに組み込む</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#firebase%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E6%A9%9F%E8%83%BD%E3%82%92rails%E3%81%AB%E7%B5%84%E3%81%BF%E8%BE%BC%E3%82%80">Firebaseのログイン機能をRailsに組み込む</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E4%BF%9D%E6%8C%81">セッションの保持</a>
+
+
 ## 環境
 - Ruby 2.6.5
 - Ruby on Rails API 5.2.3
@@ -16,7 +28,39 @@ https://bit.ly/2FZf5xi
 - PostgreSQL 11.5
 
 ## 構成
-:<snip>
+
+```
+| -- backend
+| | -- app
+|   | -- controllers
+|      | -- api
+|         | -- v1
+|            | -- todos_controller.rb
+|            | -- users_controller.rb
+|   | -- model
+|      | -- todo.rb
+|      | -- user.
+| | -- config
+|   | -- initializers
+|      | -- cors.rb
+|   | -- routes.rb
+| | -- db
+| -- fontend
+|  | -- components
+|     | -- AddTodo.vue
+|     | -- TodoList.vue
+|  | -- pages
+|     | -- index.vue
+|     | -- signup.vue
+|  | -- plugins
+|     | -- auth-check.js
+|     | -- axios.js
+|     | -- firebase.js
+|     | -- vuetify.js
+|  | -- .env
+|  | -- .nuxt.config.js
+- README
+```
 
 ## プロジェクトを生成
 
