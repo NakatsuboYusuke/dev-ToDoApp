@@ -535,6 +535,76 @@ export default {
 
 ```
 
-
-
 ## Firebaseのログイン機能をRailsに組み込む
+
+### CROSを許可
+
+```
+# backend/Gemfile
+gem 'rack-cors'
+
+$ bundle install
+
+# backend/config/initializers/cors.rb
+Rails.application.config.middleware.insert_before 0, Rack::Cors do
+  allow do
+    origins '*'
+
+    resource '*',
+      headers: :any,
+      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+  end
+end
+```
+
+### ルーティングを整理
+
+```
+Rails.application.routes.draw do
+  namespace :api, format: 'json' do
+    namespace :v1 do
+      resources :todos, only: [:create, :destroy]
+      resources :users, only: [:index, :create]
+    end
+  end
+end
+```
+
+### userコントローラを整理
+
+```
+module Api::V1
+  class UsersController < ApplicationController
+
+    def index
+      @users = User.all
+      render json: @users
+    end
+
+    def create
+      @user = User.new(user_params)
+
+      if @user.save
+        render json: @user, status: :created
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
+    end
+
+    private
+
+    def set_user
+      @user = User.find(params[:id])
+    end
+
+  end
+end
+```
+
+### Rails cでUserモデルに値が追加されているか確認
+
+```
+Parameters: {"user"=>{"email"=>"testuser@test.com", "name"=>"testUser", "uid"=>"lhHxsWlR1MVeCehE7Hf66X0q9Uh1"}}
+```
+
+
