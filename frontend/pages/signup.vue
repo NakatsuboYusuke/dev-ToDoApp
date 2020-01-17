@@ -32,6 +32,7 @@
 
 <script>
 import firebase from '@/plugins/firebase'
+import axios from '@/plugins/axios'
 
 export default {
   data() {
@@ -54,7 +55,15 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then(res => {
-          console.log(res.user);
+          const user = {
+            email: res.user.email,
+            name: this.name,
+            uid: res.user.uid
+          }
+          axios.post('/api/v1/users',{ user }).then(() => {
+            this.$router.push('/')
+          });
+          //console.log(res.user);
         })
         .catch(error => {
           this.error = (code => {
@@ -69,10 +78,10 @@ export default {
                 return '※メールアドレスとパスワードをご確認ください'
             }
           })(error.code)
-        });
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>

@@ -18,7 +18,7 @@ export default {
   },
   created() {
     // 環境変数が読み込めているか確認する
-    console.log('API_KEY:', process.env.API_KEY)
+    // console.log('API_KEY:', process.env.API_KEY)
   },
   data() {
     return {

@@ -458,10 +458,10 @@ export default {
                 return '※メールアドレスとパスワードをご確認ください'
             }
           })(error.code)
-        });
+        })
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -472,6 +472,69 @@ export default {
 </style>
 ```
 
-### Firebaseのコンソールでユーザーが登録できているか確認する
+### Firebaseのコンソールでユーザーが登録できているか確認
+
+### axiosの設定
+
+```
+$ npm install --save axios
+```
+
+```
+# frontend/plugins/axios.js
+import axios from 'axios'
+
+export default axios.create({
+    baseURL: process.env.API_ENDPOINT
+})
+
+// =>
+// axios.post('http::/localhost:5000/api/v1/users', newUser)
+// axios.post('/api/v1/users', newUser)
+
+# frontend/.env
+API_ENDPOINT="http://localhost:3000"
+```
+
+### サーバーを再起動する
+
+```
+$ yarn run dev
+```
+
+### サインアップページを編集
+
+```
+# frontend/pages/signup.vue
+import axios from '@/plugins/axios'
+
+export default {
+  :<snip>
+  methods: {
+   signup() {
+      if (this.password !== this.passwordConfirm) {
+        this.error = '※パスワードとパスワード確認が一致していません'
+      }
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .then(res => {
+          const user = {
+            email: res.user.email,
+            name: this.name,
+            uid: res.user.uid
+          }
+          axios.post('api/v1/users',{ user }).then(() => {
+            this.$router.push("/")
+          })
+          //console.log(res.user)
+        })
+    }
+  }
+}
+
+```
+
+
 
 ## Firebaseのログイン機能をRailsに組み込む
