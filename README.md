@@ -290,3 +290,95 @@ export default {
   }
 }
 ```
+
+## Firebaseでプロジェクトを作成
+
+### Authenticationのメール/パスワードを有効化
+
+### ウェブアプリにFirebaseを追加
+
+### Firebase CLIのインストール
+
+```
+$ npm install -g firebase-tools
+```
+
+### Firebaseのライブラリのインストール
+
+```
+$ npm install firebase
+```
+
+### dotenvのインストール
+
+```
+$ npm install --save-dev @nuxtjs/dotenv
+```
+
+### NuxtにFirebaseのプラグインを追加
+
+```
+# frontend/plugins/firebase.js
+import firebase from "firebase/app"
+import "firebase/auth"
+
+const fbConfig = {
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    databaseURL: process.env.DATABASE_URL,
+    projectId: process.env.PROJECT_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGE_SENDER_ID,
+    appId: process.env.APP_ID
+};
+firebase.initializeApp(fbConfig)
+
+export default firebase
+
+
+# frontend/nuxt.config.js
+:<snip>
+require('dotenv').config();
+export default {
+  :<snip>
+  plugins: [
+    '@/plugins/vuetify',
+  ],
+  :<snip>
+}
+
+```
+
+### Firebaseの環境変数を保存する
+マイアプリ => Firebase SDK snippet => 構成
+
+```
+$ touch .env
+
+# frontend/.env
+API_KEY="A****s"
+AUTH_DOMAIN="d****m"
+DATABASE_URL="h****m"
+PROJECT_ID="d****p"
+STORAGE_BUCKET="d****m"
+MESSAGE_SENDER_ID="7****2"
+APP_ID="1****5"
+
+# frontend/.gitignore
+.env
+
+# frontend/pages/index.vue
+export default {
+  :<snip>
+  created() {
+    // 環境変数が読み込めているか確認する
+    console.log('API_KEY:', process.env.API_KEY)
+  },
+  :<snip>
+}
+</script>
+
+// => API_KEY: A****s
+```
+
+## Firebaseのログイン機能をNuxtに組み込む
