@@ -11,14 +11,17 @@
 
 <script>
 export default {
+  // 配列 todos の値を受け取る
+  props: ['todos'],
   data() {
     return {
-      todos: [
-        {
-          title: 'test',
-          username: '太郎',
-        }
-      ],
+      // 初期値は不要となるので削除
+      // todos: [
+      //   {
+      //     title: 'test',
+      //     username: '太郎'
+      //   }
+      // ],
       search: '',
       headers: [
         {

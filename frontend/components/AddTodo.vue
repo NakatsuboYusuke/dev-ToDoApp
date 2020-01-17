@@ -22,10 +22,12 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.title = '';
+      // handleSubmit メソッドで取得した値を、$emit で親コンポーネントに渡す
+      this.$emit('submit', this.title)
+      this.title = ''
     }
   }
-};
+}
 </script>
 
 <style>

@@ -161,7 +161,7 @@ export default {
       todos: [
         {
           title: 'test',
-          username: '太郎',
+          username: '太郎'
         }
       ],
       search: '',
@@ -211,10 +211,10 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.title = '';
+      this.title = ''
     }
   }
-};
+}
 </script>
 
 <style>
@@ -246,5 +246,47 @@ export default {
     '@/plugins/vuetify',
   ],
   :<snip>
+}
+```
+
+## Nuxtでメソッドを追加
+
+```
+# frontend/pages/index.vue
+<!-- 子コンポーネントから値を取得する -->
+<AddTodo @submit="addTodo" />
+<!-- 配列 todos に値をpushする -->
+<TodoList :todos="todos" />
+
+# frontend/components/TodoList.vue
+:<snip>
+export default {
+  // 配列 todos の値を受け取る
+  props: ['todos'],
+  data() {
+    return {
+      // 初期値は不要となるので削除
+      // todos: [
+      //   {
+      //     title: 'test',
+      //     username: '太郎'
+      //   }
+      // ],
+    :<snip>
+    }
+  }
+}
+</script>
+
+# frontend/components/AddTodo.vue
+export default {
+  :<snip>
+  methods: {
+    handleSubmit() {
+      // handleSubmit メソッドで取得した値を、$emit で親コンポーネントに渡す
+      this.$emit('submit', this.title)
+      this.title = ''
+    }
+  }
 }
 ```
