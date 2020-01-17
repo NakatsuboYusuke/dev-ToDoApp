@@ -111,3 +111,140 @@ end
 ```
 
 ## NuxtでComponentを作成
+
+```
+# frontend/pages/index.vue
+<template>
+  <div>
+    <AddTodo />
+    <TodoList />
+  </div>
+</template>
+
+<script>
+import AddTodo from "~/components/AddTodo";
+import TodoList from "~/components/TodoList";
+
+export default {
+  components: {
+    AddTodo,
+    TodoList
+  },
+  data() {
+    return {
+      todos: []
+    }
+  }
+}
+</script>
+
+<style>
+</style>
+
+
+# frontend/components/TodoList.vue
+<template>
+  <v-card>
+    <v-card-title>
+      Todo List
+      <v-spacer></v-spacer>
+      <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+    </v-card-title>
+    <v-data-table :headers="headers" :items="todos" :search="search"></v-data-table>
+  </v-card>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      todos: [
+        {
+          title: 'test',
+          username: '太郎',
+        }
+      ],
+      search: '',
+      headers: [
+        {
+          text: 'タイトル',
+          align: 'left',
+          sortable: false,
+          value: 'title'
+        },
+        {
+          text: 'ユーザー名',
+          value: 'username'
+        }
+      ]
+    }
+  }
+}
+</script>
+
+<style>
+</style>
+
+
+# frontend/components/AddTodo.vue
+<template>
+  <v-form>
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="4">
+          <v-text-field v-model="title" :counter="10" label="todo" required></v-text-field>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-btn @click="handleSubmit">作成</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      title: ''
+    };
+  },
+  methods: {
+    handleSubmit() {
+      this.title = '';
+    }
+  }
+};
+</script>
+
+<style>
+</style>
+```
+
+### プラグインを追加
+
+```
+$ npm install material-design-icons-iconfont
+
+# frontend/plugins/vuetify.js
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib'
+
+Vue.use(Vuetify)
+
+export default new Vuetify({
+  icons: {
+    iconfont: 'md',
+  }
+})
+
+# frontend/nuxt.config.js
+export default {
+  :<snip>
+  plugins: [
+    '@/plugins/vuetify',
+  ],
+  :<snip>
+}
+```
