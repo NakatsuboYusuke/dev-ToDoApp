@@ -16,6 +16,10 @@ export default {
     AddTodo,
     TodoList
   },
+  created() {
+    // 環境変数が読み込めているか確認する
+    // console.log('API_KEY:', process.env.API_KEY)
+  },
   data() {
     return {
       todos: []
@@ -31,5 +35,5 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 </style>

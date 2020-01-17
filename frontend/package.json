@@ -11,10 +11,13 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "axios": "^0.19.1",
+    "firebase": "^7.7.0",
     "material-design-icons-iconfont": "^5.0.1",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/vuetify": "^1.0.0"
   }
 }
