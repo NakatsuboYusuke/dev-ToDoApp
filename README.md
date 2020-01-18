@@ -17,8 +17,9 @@ https://bit.ly/2FZf5xi
 - <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#firebase%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E6%A9%9F%E8%83%BD%E3%82%92nuxt%E3%81%AB%E7%B5%84%E3%81%BF%E8%BE%BC%E3%82%80">Firebaseのログイン機能をNuxtに組み込む</a>
 - <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#firebase%E3%81%AE%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E6%A9%9F%E8%83%BD%E3%82%92rails%E3%81%AB%E7%B5%84%E3%81%BF%E8%BE%BC%E3%82%80">Firebaseのログイン機能をRailsに組み込む</a>
 - <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E4%BF%9D%E6%8C%81">セッションの保持</a>
-- <a href="">Vuexで状態を管理</a>
-- <a href="">ログインページを作成</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#vuex%E3%81%A7%E7%8A%B6%E6%85%8B%E3%82%92%E7%AE%A1%E7%90%86">Vuexで状態を管理</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%92%E4%BD%9C%E6%88%90">ログインページを作成</a>
+- <a href="">マイページを作成</a>
 - <a href=""></a>
 
 
@@ -56,6 +57,7 @@ https://bit.ly/2FZf5xi
 |   | -- index.vue
 |   | -- signup.vue
 |   | -- login.vue
+|   | -- mypage.vue
 | | -- plugins
 |   | -- auth-check.js
 |   | -- axios.js
@@ -923,3 +925,101 @@ export default {
 }
 </script>
 ```
+
+## マイページの作成
+
+```
+# frontend/pages/mypage.vue
+<template>
+  <div>
+    <div v-if="user">
+      <p>Email: {{ user.email }}</p>
+      <p>ユーザー名: {{ user.name }}</p>
+    </div>
+    <v-btn @click="logOut">ログアウト</v-btn>
+  </div>
+</template>
+
+<script>
+import firebase from "@/plugins/firebase";
+export default {
+  computed: {
+    user() {
+      return this.$store.state.currentUser;
+    }
+  },
+  methods: {
+    logOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$store.commit('setUser', null);
+          this.$router.push('/login');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+}
+</script>
+
+<style scoped>
+</style>
+```
+
+### ナビゲーションを修正
+
+```
+# frontend/layouts/default.vue
+export default {
+  data () {
+    return {
+      clipped: false,
+      drawer: false,
+      fixed: false,
+      miniVariant: false,
+      right: true,
+      rightDrawer: false,
+      title: 'Todo App' // リファクタリング
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.currentUser;
+    },
+    items() {
+      if (this.user) {
+        return [
+          {
+            icon: 'mdi-apps',
+            title: 'Todos',
+            to: '/'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: 'mypage',
+            to: '/mypage'
+          }
+        ];
+      } else {
+        return [
+          {
+            icon: 'mdi-apps',
+            title: 'ログイン',
+            to: '/login'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: '新規登録',
+            to: '/signup'
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+### ビューでログイン/ログアウトできているか確認
