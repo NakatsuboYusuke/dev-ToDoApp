@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div v-if="user">
+    <!-- ログインしているユーザーを取得する -->
+    <p>{{ user.name }}</p>
     <!-- 子コンポーネントから値を取得する -->
     <AddTodo @submit="addTodo" />
     <!-- 配列 todos に値をpushする -->
@@ -15,6 +17,11 @@ export default {
   components: {
     AddTodo,
     TodoList
+  },
+  computed: {
+    user() {
+      return this.$store.state.currentUser
+    }
   },
   created() {
     // 環境変数が読み込めているか確認する
