@@ -1070,3 +1070,12 @@ export default {
   }
 }
 ```
+
+### ここのコードでスタック
+
+```
+this.$store.commit('setUser', {
+  ...this.user,
+  todos: [...this.user.todos, data]
+})
+```
