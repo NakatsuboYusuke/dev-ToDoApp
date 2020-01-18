@@ -95,22 +95,59 @@ export default {
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Todos', // リファクタリング
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'mypage', // リファクタリング
-          to: '/mypage' // リファクタリング
-        }
-      ],
+      // items: [
+      //   {
+      //     icon: 'mdi-apps',
+      //     title: 'Todos', // リファクタリング
+      //     to: '/'
+      //   },
+      //   {
+      //     icon: 'mdi-chart-bubble',
+      //     title: 'mypage', // リファクタリング
+      //     to: '/mypage' // リファクタリング
+      //   }
+      // ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: 'Todo App' // リファクタリング
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.currentUser;
+    },
+    // loading() {
+    //   return this.$store.state.loading;
+    // },
+    items() {
+      if (this.user) {
+        return [
+          {
+            icon: 'mdi-apps',
+            title: 'Todos',
+            to: '/'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: 'mypage',
+            to: '/mypage'
+          }
+        ];
+      } else {
+        return [
+          {
+            icon: 'mdi-apps',
+            title: 'ログイン',
+            to: '/login'
+          },
+          {
+            icon: 'mdi-chart-bubble',
+            title: '新規登録',
+            to: '/signup'
+          }
+        ]
+      }
     }
   }
 }
