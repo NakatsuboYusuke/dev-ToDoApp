@@ -19,6 +19,11 @@ export default {
     AddTodo,
     TodoList
   },
+  // data() {
+  //   return {
+  //     //todos: []
+  //   }
+  // },
   computed: {
     user() {
       return this.$store.state.currentUser
@@ -28,15 +33,10 @@ export default {
     // 環境変数が読み込めているか確認する
     // console.log('API_KEY:', process.env.API_KEY)
   },
-  data() {
-    return {
-      todos: []
-    }
-  },
   methods: {
     // 通信に user_id を含める
     async addTodo(todo) {
-      const { data } = await axios.post('api/v1/todos', { todo });
+      const { data } = await axios.post('api/v1/todos', { todo })
       // ここでエラーが発生
       // this.$store.commit('setUser', {
       //   ...this.user,
