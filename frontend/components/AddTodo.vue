@@ -20,10 +20,20 @@ export default {
       title: ''
     };
   },
+  computed: {
+    user() {
+      return this.$store.state.currentUser
+    }
+  },
   methods: {
     handleSubmit() {
+      // user_id も含めたオブジェクトを作る
+      const todo = {
+        title: this.title,
+        user_id: this.user.id
+      }
       // handleSubmit メソッドで取得した値を、$emit で親コンポーネントに渡す
-      this.$emit('submit', this.title)
+      this.$emit('submit', todo)
       this.title = ''
     }
   }

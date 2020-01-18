@@ -22,7 +22,7 @@ module Api::V1
     end
 
     def todo_params
-      params.require(:todo).permit(:title)
+      params.require(:todo).permit(:title, :user_id)
     end
   end
 end

@@ -19,7 +19,7 @@ https://bit.ly/2FZf5xi
 - <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%82%BB%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%AE%E4%BF%9D%E6%8C%81">セッションの保持</a>
 - <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#vuex%E3%81%A7%E7%8A%B6%E6%85%8B%E3%82%92%E7%AE%A1%E7%90%86">Vuexで状態を管理</a>
 - <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%9A%E3%83%BC%E3%82%B8%E3%82%92%E4%BD%9C%E6%88%90">ログインページを作成</a>
-- <a href="">マイページを作成</a>
+- <a href="https://github.com/NakatsuboYusuke/dev-ToDoApp#%E3%83%9E%E3%82%A4%E3%83%9A%E3%83%BC%E3%82%B8%E3%81%AE%E4%BD%9C%E6%88%90">マイページを作成</a>
 - <a href=""></a>
 
 
@@ -1023,3 +1023,50 @@ export default {
 ```
 
 ### ビューでログイン/ログアウトできているか確認
+
+### RailsのAPIエンドポイントを修正
+
+```
+# frontend/components/AddTodo.vue
+export default {
+  :<snip>
+  methods: {
+    handleSubmit() {
+      // user_id も含めたオブジェクトを作る
+      const todo = {
+        title: this.title,
+        user_id: this.user.id
+      }
+      // handleSubmit メソッドで取得した値を、$emit で親コンポーネントに渡す
+      this.$emit('submit', this.todo)
+      this.title = ''
+    }
+  }
+}
+
+# frontend/pages/index.vue
+<template>
+  <div v-if="user">
+    :<snip>
+    <!-- 配列 todos に値をpushする --><!-- user_id を含める -->
+    <TodoList :todos="user.todos" />
+  </div>
+</template>
+
+:<snip>
+import axios from "~/plugins/axios";
+
+export default {
+  :<snip>
+  methods: {
+    // 通信に user_id を含める
+    async addTodo(todo) {
+      const { data } = await axios.post('api/v1/todos', { todo })
+      this.$store.commit('setUser', {
+        ...this.user,
+        todos: [...this.user.todos, data]
+      })
+    }
+  }
+}
+```
